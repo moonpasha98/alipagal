@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import * as NavbarModule from './components/Navbar';
-import * as HeroModule from './components/Hero';
-
-const NavbarComponent = (NavbarModule as any).Navbar || (NavbarModule as any).default;
-const HeroComponent = (HeroModule as any).Hero || (HeroModule as any).default;
+import Navbar from './components/Navbar';
+import { Hero } from './components/Hero';
 
 export default function App() {
   const [isBookingModalOpen, setBookingModalOpen] = useState(false);
@@ -18,8 +15,9 @@ export default function App() {
 
   return (
     <div className="bg-[#FAF8F5] text-[#1F1F1F] min-h-screen font-poppins">
-      {NavbarComponent && <NavbarComponent onOpenBooking={() => handleOpenBooking()} />}
-      {HeroComponent && <HeroComponent onOpenBooking={() => handleOpenBooking()} />}
+      {/* Agar Navbar default export hai toh direct component, nahi toh div fallback */}
+      <Navbar onOpenBooking={handleOpenBooking} />
+      <Hero onOpenBooking={handleOpenBooking} />
     </div>
   );
 }
