@@ -43,3 +43,5 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
     </div>
   );
 };
+
+export default Hero;
