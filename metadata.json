@@ -1,0 +1,6 @@
+{
+  "name": "The Bridal Villa",
+  "description": "Luxury Beauty Studio & Academy in Amroha offering bridal HD & airbrush makeup, hair styling, skin care, and academy courses.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
