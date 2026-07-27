@@ -19,7 +19,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 
     const ownerWhatsAppNumber = "918864843330";
 
-    const text = `*New Booking Request - Moon Pasha Studio*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
+    const text = `*New Booking Request - The Bridal Villa*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
 
     window.open(`https://api.whatsapp.com/send?phone=${ownerWhatsAppNumber}&text=${text}`, '_blank');
     
@@ -39,7 +39,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
             ✕
           </button>
           <p className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest mb-1">
-            Moon Pasha Makeup Studio
+            The Bridal Villa
           </p>
           <h3 className="font-serif text-2xl font-bold text-white">
             Book Your Appointment
@@ -100,9 +100,14 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
     <nav className="bg-[#111111]/90 backdrop-blur-md text-white sticky top-0 z-40 border-b border-[#D4AF37]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          <a href="#" className="flex flex-col">
-            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-white">MOON PASHA</span>
-            <span className="text-[10px] text-[#AA771C] uppercase tracking-[0.25em] font-medium -mt-1">Makeup Studio</span>
+          <a href="#" className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full bg-[#AA771C]/20 border border-[#AA771C] flex items-center justify-center font-serif font-bold text-[#AA771C] text-sm">
+              BV
+            </div>
+            <div className="flex flex-col">
+              <span className="font-serif text-lg sm:text-xl font-bold tracking-wider text-white">THE BRIDAL VILLA</span>
+              <span className="text-[9px] text-[#AA771C] uppercase tracking-[0.2em] font-medium -mt-0.5">Makeup Studio by Nandini Dhingra</span>
+            </div>
           </a>
 
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
@@ -148,7 +153,7 @@ function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#AA771C]/15 blur-3xl rounded-full pointer-events-none" />
       <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
         <span className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest bg-[#AA771C]/10 px-4 py-2 rounded-full border border-[#AA771C]/30 inline-block">
-          Moon Pasha Makeup Studio
+          The Bridal Villa • By Nandini Dhingra
         </span>
         <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
           Enhance Your Natural Beauty <br className="hidden sm:inline" /> For Every Special Occasion
@@ -239,7 +244,7 @@ function FAQ() {
 }
 
 // ==========================================
-// 6. FOOTER COMPONENT (UPDATED WITH YOUR NO.)
+// 6. FOOTER COMPONENT
 // ==========================================
 function Footer() {
   const ownerNumber = "88648 43330";
@@ -252,9 +257,12 @@ function Footer() {
         {/* Brand Description */}
         <div className="space-y-4">
           <h3 className="font-serif text-2xl font-bold">
-            Moon Pasha <span className="text-[#AA771C]">Makeup Studio</span>
+            The Bridal Villa <span className="text-[#AA771C]">Studio</span>
           </h3>
-          <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+          <p className="text-gray-400 text-xs text-[#AA771C] uppercase tracking-wider font-semibold -mt-2">
+            Makeup Studio By Nandini Dhingra
+          </p>
+          <p className="text-gray-400 text-sm leading-relaxed max-w-sm pt-1">
             Aapke har khaas mauke (Bridal, Engagement & Party) ko aur bhi zyada khoobsurat banane ke liye professional makeup services.
           </p>
         </div>
@@ -269,7 +277,7 @@ function Footer() {
           </ul>
         </div>
 
-        {/* Contact Us - Number Updated Here */}
+        {/* Contact Us */}
         <div className="space-y-3">
           <h4 className="font-serif text-lg font-semibold text-white">Contact Us</h4>
           <p className="text-sm text-gray-400">
@@ -295,7 +303,7 @@ function Footer() {
       </div>
 
       <div className="text-center text-xs text-gray-500 border-t border-gray-800/80 pt-6">
-        © 2026 Moon Pasha Makeup Studio. All rights reserved.
+        © 2026 The Bridal Villa. All rights reserved.
       </div>
     </footer>
   );
@@ -315,7 +323,7 @@ export default function App() {
       <FAQ />
       <Footer />
 
-      {/* Floating WhatsApp Button at Bottom Right */}
+      {/* Floating WhatsApp Button */}
       <a
         href="https://api.whatsapp.com/send?phone=918864843330"
         target="_blank"
