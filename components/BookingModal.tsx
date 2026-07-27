@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
+import { X, CheckCircle, Calendar, User, Phone, Sparkles } from 'lucide-react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -6,116 +7,179 @@ interface BookingModalProps {
 }
 
 const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: 'Bridal Makeup',
-    date: '',
-    notes: ''
-  });
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const text = `Hello! New Booking Inquiry:\nName: ${formData.name}\nPhone: ${formData.phone}\nService: ${formData.service}\nDate: ${formData.date}\nNotes: ${formData.notes}`;
-    const whatsappUrl = `https://wa.me/919876543210?text=${encodeURIComponent(text)}`;
-    window.open(whatsappUrl, '_blank');
-    onClose();
+    setLoading(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xjgnjlwk", {
+        method: "POST",
+        body: data,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        form.reset();
+      } else {
+        alert("Kuch error aa gayi. Kripya dobara koshish karein.");
+      }
+    } catch (error) {
+      alert("Network error. Kripya apna internet connection check karein.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl border border-[#D4AF37]/30">
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-2xl font-bold"
-          type="button"
-        >
-          &times;
-        </button>
-
-        <div className="text-center mb-6">
-          <p className="text-xs font-semibold text-[#AA771C] uppercase tracking-widest mb-1">
-            Secure Your Date
-          </p>
-          <h3 className="font-serif text-2xl font-bold text-[#111111]">
-            Book An Appointment
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+      <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-[#D4AF37]/30 relative">
+        
+        {/* Header */}
+        <div className="bg-[#111111] text-white p-6 relative">
+          <button 
+            onClick={onClose}
+            className="absolute top-5 right-5 text-gray-400 hover:text-white bg-white/10 p-2 rounded-full transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+          <div className="flex items-center space-x-2 text-[#AA771C] text-xs font-semibold uppercase tracking-widest mb-1">
+            <Sparkles className="w-4 h-4" />
+            <span>Moon Pasha Makeup Studio</span>
+          </div>
+          <h3 className="font-serif text-2xl font-bold text-white">
+            Book Your Appointment
           </h3>
-          <div className="w-12 h-0.5 bg-[#D4AF37] mx-auto mt-2"></div>
+          <p className="text-gray-400 text-xs mt-1">
+            Apni details bhariye, hum aapse jald hi contact karenge.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Full Name</label>
-            <input 
-              type="text" 
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#AA771C] text-sm"
-              placeholder="Aapka naam"
-            />
-          </div>
+        {/* Body / Form */}
+        <div className="p-6 md:p-8">
+          {submitted ? (
+            <div className="text-center py-8 space-y-4">
+              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
+                <CheckCircle className="w-10 h-10" />
+              </div>
+              <h4 className="font-serif text-2xl font-bold text-[#111111]">
+                Booking Request Sent!
+              </h4>
+              <p className="text-gray-600 text-sm max-w-xs mx-auto">
+                Aapki booking request humein mil gayi hai. Hum jald hi aapko call ya WhatsApp par confirm karenge.
+              </p>
+              <button
+                onClick={() => {
+                  setSubmitted(false);
+                  onClose();
+                }}
+                className="mt-4 px-6 py-2.5 bg-[#111111] hover:bg-[#AA771C] text-white text-sm font-medium rounded-xl transition-colors"
+              >
+                Close Window
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                  Your Full Name
+                </label>
+                <div className="relative">
+                  <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                  <input 
+                    type="text" 
+                    name="name" 
+                    required 
+                    placeholder="Enter your name"
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Phone Number</label>
-            <input 
-              type="tel" 
-              required
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#AA771C] text-sm"
-              placeholder="Mobile number"
-            />
-          </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                  Phone Number (WhatsApp preferred)
+                </label>
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                  <input 
+                    type="tel" 
+                    name="phone" 
+                    required 
+                    placeholder="Enter your mobile number"
+                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                  />
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Select Service</label>
-            <select 
-              value={formData.service}
-              onChange={(e) => setFormData({...formData, service: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#AA771C] text-sm bg-white"
-            >
-              <option value="Bridal Makeup">Bridal Makeup</option>
-              <option value="Party Makeup">Party Makeup</option>
-              <option value="Engagement Makeup">Engagement Makeup</option>
-              <option value="HD / Airbrush Makeup">HD / Airbrush Makeup</option>
-            </select>
-          </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                    Select Service
+                  </label>
+                  <select 
+                    name="service"
+                    className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                  >
+                    <option value="HD Bridal Makeup">HD Bridal Makeup</option>
+                    <option value="Party & Guest Makeup">Party & Guest Makeup</option>
+                    <option value="Engagement & Reception Look">Engagement & Reception Look</option>
+                    <option value="Pre-Bridal Package">Pre-Bridal Package</option>
+                  </select>
+                </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Event Date</label>
-            <input 
-              type="date" 
-              required
-              value={formData.date}
-              onChange={(e) => setFormData({...formData, date: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#AA771C] text-sm"
-            />
-          </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                    Preferred Date
+                  </label>
+                  <div className="relative">
+                    <Calendar className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <input 
+                      type="date" 
+                      name="date" 
+                      required 
+                      className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                    />
+                  </div>
+                </div>
+              </div>
 
-          <div>
-            <label className="block text-xs font-medium text-gray-700 mb-1">Additional Notes (Optional)</label>
-            <textarea 
-              rows={2}
-              value={formData.notes}
-              onChange={(e) => setFormData({...formData, notes: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-[#AA771C] text-sm"
-              placeholder="Venue location ya time..."
-            ></textarea>
-          </div>
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                  Special Notes / Requirements (Optional)
+                </label>
+                <textarea 
+                  name="message" 
+                  rows={3} 
+                  placeholder="Any specific look or timing requirements..."
+                  className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                ></textarea>
+              </div>
 
-          <button 
-            type="submit"
-            className="w-full py-3 bg-[#AA771C] text-white rounded-lg font-medium hover:bg-[#916216] transition-colors shadow-md text-sm tracking-wide"
-          >
-            Send Booking Request via WhatsApp
-          </button>
-        </form>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3.5 bg-[#111111] hover:bg-[#AA771C] text-white text-sm font-medium rounded-xl transition-colors shadow-md flex items-center justify-center space-x-2"
+              >
+                {loading ? "Sending Request..." : "Confirm Booking Request"}
+              </button>
+            </form>
+          )}
+        </div>
+
       </div>
     </div>
   );
 };
 
-export default BookingModal;
+export default BookingModal; 
