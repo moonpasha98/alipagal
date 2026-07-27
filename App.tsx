@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 // ==========================================
-// 1. ADMIN MODAL COMPONENT (EASIEST SETUP)
+// 1. ADMIN MODAL COMPONENT
 // ==========================================
 function AdminModal({ 
   isOpen, 
@@ -22,7 +22,6 @@ function AdminModal({
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Secret PIN set to 1234
     if (pin === '1234') {
       setIsAuthorized(true);
     } else {
@@ -347,6 +346,9 @@ function FAQ() {
 // ==========================================
 function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: () => void }) {
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}`;
+  
+  // Format phone number for UI display
+  const displayPhone = ownerPhone.length >= 10 ? ownerPhone.slice(-10) : ownerPhone;
 
   return (
     <footer id="contact" className="bg-[#111111] text-white pt-16 pb-8">
@@ -380,7 +382,7 @@ function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: 
             Kailsa Rd, near Mld Spices Company, Vivekanand Nagar, Amroha, Uttar Pradesh 244221
           </p>
           <p className="text-sm text-gray-400">
-            <strong className="text-white">Phone:</strong> +{ownerPhone}
+            <strong className="text-white">Phone:</strong> +91 {displayPhone}
           </p>
 
           <div className="flex space-x-3 pt-2">
@@ -413,18 +415,22 @@ function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: 
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  
+  // Default fallback is strictly set to 918864843330
   const [ownerPhone, setOwnerPhone] = useState('918864843330');
 
-  // Local storage se phone number load karein
   useEffect(() => {
     const savedPhone = localStorage.getItem('bv_owner_phone');
-    if (savedPhone) {
+    if (savedPhone && savedPhone.length >= 10) {
       setOwnerPhone(savedPhone);
+    } else {
+      setOwnerPhone('918864843330');
     }
   }, []);
 
   const handleSavePhone = (newPhone: string) => {
     setOwnerPhone(newPhone);
+    localStorage.getItem('bv_owner_phone');
     localStorage.setItem('bv_owner_phone', newPhone);
   };
 
