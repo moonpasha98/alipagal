@@ -1,30 +1,63 @@
 import React, { useState } from 'react';
-import WhatsAppButton from './components/WhatsAppButton';
 import Navbar from './components/Navbar';
-import Hero from './components/hero';
+import Hero from './components/Hero';
 import Services from './components/Services';
 import Gallery from './components/Gallery';
-import FAQ from './components/FAQ';
 import Location from './components/Location';
+import BusinessHours from './components/BusinessHours';
 import Testimonials from './components/Testimonials';
+import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import BookingModal from './components/BookingModal';
+import WhatsAppButton from './components/WhatsAppButton';
 
-export default function App() {
+function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
+  const handleOpenBooking = () => {
+    setIsBookingOpen(true);
+  };
+
+  const handleCloseBooking = () => {
+    setIsBookingOpen(false);
+  };
+
   return (
-    <div className="bg-[#FAF8F5] text-[#1F1F1F] min-h-screen font-poppins">
-      <Navbar onOpenBooking={() => setIsBookingOpen(true)} />
-      <Hero onOpenBooking={() => setIsBookingOpen(true)} />
-      <Services />
+    <div className="min-h-screen bg-white text-[#111111] font-sans selection:bg-[#AA771C] selection:text-white">
+      {/* Navbar */}
+      <Navbar onOpenBooking={handleOpenBooking} />
+
+      {/* Hero Section */}
+      <Hero onOpenBooking={handleOpenBooking} />
+
+      {/* Services Section */}
+      <Services onOpenBooking={handleOpenBooking} />
+
+      {/* Gallery Section */}
       <Gallery />
-      <FAQ />
+
+      {/* Location Section */}
       <Location />
+
+      {/* Business Hours Section */}
+      <BusinessHours />
+
+      {/* Testimonials Section */}
       <Testimonials />
+
+      {/* FAQ Section */}
+      <FAQ />
+
+      {/* Footer */}
       <Footer />
+
+      {/* Floating WhatsApp Button */}
       <WhatsAppButton />
-      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+
+      {/* Booking Modal Form */}
+      <BookingModal isOpen={isBookingOpen} onClose={handleCloseBooking} />
     </div>
   );
 }
+
+export default App;
