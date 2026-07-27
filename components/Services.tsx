@@ -1,85 +1,84 @@
 import React from 'react';
 
-const servicesList = [
-  {
-    id: 1,
-    title: "HD Bridal Makeup",
-    price: "₹12,500",
-    description: "Flawless, high-definition makeup giving a natural and glowing look for your special day.",
-    features: ["HD Base", "Long-lasting", "Hairstyling included"]
-  },
-  {
-    id: 2,
-    title: "Pro HD Bridal Makeup",
-    price: "₹15,000",
-    description: "Advanced professional HD makeup using premium luxury products for extra perfection.",
-    features: ["Premium HD Base", "Waterproof finish", "Advanced Hairstyling", "Draping"]
-  },
-  {
-    id: 3,
-    title: "Airbrush Bridal Makeup",
-    price: "₹18,000",
-    description: "Flawless airbrush technique for an ultra-smooth, lightweight, and flawless finish.",
-    features: ["Airbrush Application", "Sweat-proof", "Long-stay HD finish", "Complete Look"]
-  },
-  {
-    id: 4,
-    title: "Signature Bridal Makeup",
-    price: "₹22,000",
-    description: "Exclusive luxury signature makeup look customized personally to make you look like a queen.",
-    features: ["Customized Look", "Top Luxury Brands", "Pre-bridal consultation perks", "Full HD/Airbrushing"]
-  },
-  {
-    id: 5,
-    title: "Party Makeup",
-    price: "₹3,500",
-    description: "Glamorous and elegant makeup look tailored for guests, cocktail parties, and family events.",
-    features: ["Party Glam Base", "Eye makeup", "Light Hairstyling"]
-  }
-];
+interface ServicesProps {
+  onOpenBooking: () => void;
+}
 
-const Services: React.FC = () => {
+const Services: React.FC<ServicesProps> = ({ onOpenBooking }) => {
+  const serviceList = [
+    {
+      title: "HD Bridal Makeup",
+      price: "₹15,000 - ₹25,000",
+      desc: "Flawless, long-lasting high-definition makeup designed specifically for wedding day cameras and lighting.",
+      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      title: "Party & Guest Makeup",
+      price: "₹3,500 - ₹6,000",
+      desc: "Get ready to turn heads at receptions, cocktail parties, or family celebrations with glowing glam looks.",
+      image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      title: "Engagement & Reception Look",
+      price: "₹10,000 - ₹18,000",
+      desc: "Sophisticated and elegant makeover tailored to match your outfit and jewelry for pre-wedding functions.",
+      image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=600&q=80",
+    },
+    {
+      title: "Pre-Bridal Package",
+      price: "₹8,000 onwards",
+      desc: "Complete skin glow treatments, facials, hair spa, and pampering sessions leading up to the big day.",
+      image: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80",
+    },
+  ];
+
   return (
-    <section className="py-16 bg-white text-[#111111]" id="services">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <p className="text-xs font-semibold text-[#AA771C] uppercase tracking-widest mb-2">
-          Our Packages
-        </p>
-        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#111111] mb-4">
-          Bridal & Party Services
-        </h2>
-        <div className="w-16 h-0.5 bg-[#D4AF37] mx-auto mb-12"></div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left">
-          {servicesList.map((service) => (
+    <section id="services" className="py-20 px-4 bg-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16">
+          <p className="text-xs font-semibold text-[#AA771C] uppercase tracking-widest mb-2">
+            Our Expertise
+          </p>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#111111]">
+            Professional Makeup Services & Prices
+          </h2>
+          <div className="w-16 h-0.5 bg-[#D4AF37] mx-auto mt-3"></div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {serviceList.map((service, index) => (
             <div 
-              key={service.id}
-              className="bg-[#FAF8F5] border border-[#D4AF37]/30 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between"
+              key={index} 
+              className="bg-[#FAF8F5] rounded-2xl overflow-hidden border border-[#D4AF37]/20 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="font-serif text-xl font-bold text-[#111111]">
+                <div className="h-56 overflow-hidden relative">
+                  <img 
+                    src={service.image} 
+                    alt={service.title} 
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-md text-[#D4AF37] px-3 py-1 rounded-full text-xs font-semibold">
+                    {service.price}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-xl font-bold text-[#111111] mb-2">
                     {service.title}
                   </h3>
-                  <span className="text-lg font-bold text-[#AA771C]">
-                    {service.price}
-                  </span>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {service.desc}
+                  </p>
                 </div>
-                <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                  {service.description}
-                </p>
-                <ul className="space-y-2 mb-8">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="text-xs text-gray-700 flex items-center">
-                      <span className="w-1.5 h-1.5 bg-[#D4AF37] rounded-full mr-2"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
               </div>
-              <button className="w-full py-3 bg-[#111111] text-[#D4AF37] text-xs uppercase tracking-widest font-medium rounded-xl hover:bg-[#AA771C] hover:text-white transition-colors">
-                Book Now
-              </button>
+              <div className="p-6 pt-0">
+                <button
+                  onClick={onOpenBooking}
+                  className="w-full py-3 bg-[#111111] hover:bg-[#AA771C] text-white text-sm font-medium rounded-xl transition-colors shadow-sm"
+                >
+                  Book This Service
+                </button>
+              </div>
             </div>
           ))}
         </div>
