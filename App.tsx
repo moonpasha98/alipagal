@@ -1,9 +1,103 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // ==========================================
-// 1. BOOKING MODAL COMPONENT
+// 1. ADMIN MODAL COMPONENT (EASIEST SETUP)
 // ==========================================
-function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+function AdminModal({ 
+  isOpen, 
+  onClose, 
+  currentPhone, 
+  onSavePhone 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  currentPhone: string; 
+  onSavePhone: (newPhone: string) => void; 
+}) {
+  const [pin, setPin] = useState('');
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [phoneInput, setPhoneInput] = useState(currentPhone);
+
+  if (!isOpen) return null;
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Secret PIN set to 1234
+    if (pin === '1234') {
+      setIsAuthorized(true);
+    } else {
+      alert('Wrong PIN! Try again.');
+    }
+  };
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleaned = phoneInput.replace(/[^0-9]/g, '');
+    if (cleaned.length < 10) {
+      alert('Please enter a valid 10-digit number!');
+      return;
+    }
+    onSavePhone(cleaned);
+    alert('WhatsApp Number Updated Successfully!');
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm text-gray-900">
+      <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-[#C59B27]/30">
+        <button 
+          onClick={onClose} 
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-lg font-bold"
+        >
+          ✕
+        </button>
+
+        {!isAuthorized ? (
+          <form onSubmit={handleLogin} className="space-y-4">
+            <h3 className="font-serif text-xl font-bold text-gray-900 text-center">Admin Login</h3>
+            <p className="text-xs text-gray-500 text-center">Enter PIN to manage website settings</p>
+            <input 
+              type="password" 
+              placeholder="Enter PIN (Default: 1234)" 
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl text-center font-bold tracking-widest text-lg focus:outline-none focus:border-[#C59B27]"
+            />
+            <button type="submit" className="w-full py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider rounded-xl">
+              Login
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={handleSave} className="space-y-4">
+            <h3 className="font-serif text-xl font-bold text-gray-900 text-center">Admin Dashboard</h3>
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
+                WhatsApp Phone Number
+              </label>
+              <input 
+                type="text" 
+                value={phoneInput} 
+                onChange={(e) => setPhoneInput(e.target.value)}
+                placeholder="e.g. 918864843330" 
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-[#C59B27]"
+              />
+              <span className="text-[10px] text-gray-400 mt-1 block">Include country code (e.g., 918864843330)</span>
+            </div>
+
+            <button type="submit" className="w-full py-3 bg-[#25D366] text-white text-xs font-semibold uppercase tracking-wider rounded-xl shadow-md">
+              Save Changes
+            </button>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 2. BOOKING MODAL COMPONENT
+// ==========================================
+function BookingModal({ isOpen, onClose, ownerPhone }: { isOpen: boolean; onClose: () => void; ownerPhone: string }) {
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -17,11 +111,9 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     const date = (formData.get('date') as string) || '';
     const message = (formData.get('message') as string) || 'None';
 
-    const ownerWhatsAppNumber = "918864843330";
-
     const text = `*New Booking Request - The Bridal Villa*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
 
-    window.open(`https://api.whatsapp.com/send?phone=${ownerWhatsAppNumber}&text=${text}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=${ownerPhone}&text=${text}`, '_blank');
     
     form.reset();
     onClose();
@@ -91,7 +183,7 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
 }
 
 // ==========================================
-// 2. NAVBAR COMPONENT (THE BRIDAL VILLA STYLE)
+// 3. NAVBAR COMPONENT
 // ==========================================
 function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -100,8 +192,6 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
     <nav className="bg-[#FAF6F0] text-gray-900 sticky top-0 z-40 border-b border-gray-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-24">
-          
-          {/* Logo with BV Circle Badge */}
           <a href="#" className="flex items-center space-x-3">
             <div className="w-12 h-12 rounded-full bg-[#111111] text-[#C59B27] flex items-center justify-center font-serif font-bold text-base tracking-wider border border-[#C59B27]/40 shadow-sm">
               BV
@@ -116,15 +206,12 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
             </div>
           </a>
 
-          {/* Desktop Nav Links */}
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
             <a href="#services" className="hover:text-[#C59B27] transition-colors">Services</a>
-            <a href="#portfolio" className="hover:text-[#C59B27] transition-colors">Portfolio</a>
             <a href="#faq" className="hover:text-[#C59B27] transition-colors">FAQs</a>
             <a href="#contact" className="hover:text-[#C59B27] transition-colors">Contact</a>
           </div>
 
-          {/* Action Button */}
           <div className="hidden md:flex items-center">
             <button 
               type="button" 
@@ -135,9 +222,8 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
             </button>
           </div>
 
-          {/* Mobile Toggle */}
           <div className="md:hidden flex items-center">
-            <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-gray-800 focus:outline-none">
+            <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-gray-800">
               {mobileMenuOpen ? '✕' : '☰'}
             </button>
           </div>
@@ -147,7 +233,6 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#FAF6F0] border-b border-gray-200 px-4 pt-4 pb-6 space-y-3">
           <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Services</a>
-          <a href="#portfolio" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Portfolio</a>
           <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">FAQs</a>
           <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Contact</a>
           <button type="button" onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }} className="w-full py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider rounded-full cursor-pointer">
@@ -160,7 +245,7 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 3. HERO COMPONENT (LUXURY LIGHT THEME)
+// 4. HERO COMPONENT
 // ==========================================
 function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
   return (
@@ -186,7 +271,7 @@ function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 4. SERVICES COMPONENT
+// 5. SERVICES COMPONENT
 // ==========================================
 function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
   const servicesList = [
@@ -221,7 +306,7 @@ function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 5. FAQ COMPONENT
+// 6. FAQ COMPONENT
 // ==========================================
 function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -258,17 +343,15 @@ function FAQ() {
 }
 
 // ==========================================
-// 6. FOOTER COMPONENT (MATCHING SCREENSHOT 1)
+// 7. FOOTER COMPONENT
 // ==========================================
-function Footer() {
-  const ownerNumber = "88648 43330";
-  const whatsappUrl = "https://api.whatsapp.com/send?phone=918864843330";
+function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: () => void }) {
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}`;
 
   return (
     <footer id="contact" className="bg-[#111111] text-white pt-16 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10 pb-12">
         
-        {/* Brand Column */}
         <div className="space-y-4">
           <h3 className="font-serif text-2xl font-bold">
             The Bridal Villa <span className="text-[#C59B27]">Makeup Studio</span>
@@ -281,18 +364,15 @@ function Footer() {
           </p>
         </div>
 
-        {/* Quick Links Column */}
         <div className="space-y-3">
           <h4 className="font-serif text-lg font-semibold text-white">Quick Links</h4>
           <ul className="space-y-2 text-sm text-gray-400">
             <li><a href="#services" className="hover:text-[#C59B27] transition-colors">Our Services</a></li>
-            <li><a href="#portfolio" className="hover:text-[#C59B27] transition-colors">Portfolio / Gallery</a></li>
             <li><a href="#faq" className="hover:text-[#C59B27] transition-colors">FAQs</a></li>
             <li><a href="#contact" className="hover:text-[#C59B27] transition-colors">Visit Studio</a></li>
           </ul>
         </div>
 
-        {/* Contact Us Column */}
         <div className="space-y-3">
           <h4 className="font-serif text-lg font-semibold text-white">Contact Us</h4>
           <p className="text-sm text-gray-400">
@@ -300,16 +380,10 @@ function Footer() {
             Kailsa Rd, near Mld Spices Company, Vivekanand Nagar, Amroha, Uttar Pradesh 244221
           </p>
           <p className="text-sm text-gray-400">
-            <strong className="text-white">Phone:</strong> +91 {ownerNumber}
+            <strong className="text-white">Phone:</strong> +{ownerPhone}
           </p>
 
           <div className="flex space-x-3 pt-2">
-            <a 
-              href="#" 
-              className="px-4 py-2 bg-[#C59B27] hover:bg-[#a37f1e] text-white text-xs font-semibold rounded-lg transition-colors inline-block"
-            >
-              Instagram
-            </a>
             <a 
               href={whatsappUrl} 
               target="_blank" 
@@ -323,18 +397,36 @@ function Footer() {
 
       </div>
 
-      <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6">
-        © 2026 The Bridal Villa Makeup Studio. All rights reserved.
+      <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6 flex justify-between items-center max-w-7xl mx-auto px-4">
+        <span>© 2026 The Bridal Villa Makeup Studio. All rights reserved.</span>
+        <button onClick={onOpenAdmin} className="text-gray-600 hover:text-gray-400 text-[11px] underline">
+          Admin Login
+        </button>
       </div>
     </footer>
   );
 }
 
 // ==========================================
-// 7. MAIN APP COMPONENT
+// 8. MAIN APP COMPONENT
 // ==========================================
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [ownerPhone, setOwnerPhone] = useState('918864843330');
+
+  // Local storage se phone number load karein
+  useEffect(() => {
+    const savedPhone = localStorage.getItem('bv_owner_phone');
+    if (savedPhone) {
+      setOwnerPhone(savedPhone);
+    }
+  }, []);
+
+  const handleSavePhone = (newPhone: string) => {
+    setOwnerPhone(newPhone);
+    localStorage.setItem('bv_owner_phone', newPhone);
+  };
 
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-gray-900 font-sans antialiased relative">
@@ -342,11 +434,11 @@ export default function App() {
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
       <Services onOpenBooking={() => setIsBookingOpen(true)} />
       <FAQ />
-      <Footer />
+      <Footer ownerPhone={ownerPhone} onOpenAdmin={() => setIsAdminOpen(true)} />
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://api.whatsapp.com/send?phone=918864843330"
+        href={`https://api.whatsapp.com/send?phone=${ownerPhone}`}
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center justify-center"
@@ -357,7 +449,18 @@ export default function App() {
         </svg>
       </a>
 
-      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
+      <BookingModal 
+        isOpen={isBookingOpen} 
+        onClose={() => setIsBookingOpen(false)} 
+        ownerPhone={ownerPhone}
+      />
+
+      <AdminModal 
+        isOpen={isAdminOpen} 
+        onClose={() => setIsAdminOpen(false)} 
+        currentPhone={ownerPhone}
+        onSavePhone={handleSavePhone}
+      />
     </div>
   );
 }
