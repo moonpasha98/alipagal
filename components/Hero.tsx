@@ -1,10 +1,22 @@
 import React from 'react';
 
+// Flexible Props interface jo App.tsx ki sabhi props accept kar lega
 interface HeroProps {
   onOpenBooking?: () => void;
+  onBookNow?: () => void;
+  openModal?: () => void;
+  setIsBookingOpen?: (open: boolean) => void;
+  [key: string]: any; // Accepts any extra prop passed from App.tsx
 }
 
-export default function Hero({ onOpenBooking }: HeroProps) {
+export const Hero: React.FC<HeroProps> = (props) => {
+  // App.tsx jo bhi function bhej raha ho, use identify kar lega
+  const handleBooking = 
+    props.onOpenBooking || 
+    props.onBookNow || 
+    props.openModal || 
+    (props.setIsBookingOpen ? () => props.setIsBookingOpen(true) : undefined);
+
   return (
     <section className="relative bg-[#111111] text-white py-20 md:py-28 px-4 overflow-hidden">
       {/* Background Glow */}
@@ -26,8 +38,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
         <div className="pt-4 flex justify-center">
           <button
             type="button"
-            onClick={onOpenBooking}
-            className="px-8 py-4 bg-[#AA771C] hover:bg-[#916216] text-white font-medium rounded-2xl shadow-lg transition-all duration-300 text-sm uppercase tracking-wider"
+            onClick={handleBooking}
+            className="px-8 py-4 bg-[#AA771C] hover:bg-[#916216] text-white font-medium rounded-2xl shadow-lg transition-all duration-300 text-sm uppercase tracking-wider cursor-pointer"
           >
             Book Your Appointment
           </button>
@@ -35,4 +47,6 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       </div>
     </section>
   );
-}
+};
+
+export default Hero;
