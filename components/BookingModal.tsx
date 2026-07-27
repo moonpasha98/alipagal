@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -19,14 +19,19 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
     const date = formData.get('date');
     const message = formData.get('message') || 'None';
 
-    // Apna WhatsApp Number yahan daalein (Country code ke sath, jaise 919876543210)
+    // Aapka number yahan set kar diya gaya hai
     const ownerWhatsAppNumber = "918864843330"; 
 
-    // WhatsApp message format
-    const text = `*New Booking Request - Moon Pasha Studio*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
+    const text = `New Booking Request:%0AName: ${name}%0APhone: ${phone}%0AService: ${service}%0ADate: ${date}%0ANotes: ${message}`;
 
-    // WhatsApp URL open karein
-    window.open(`https://wa.me/${ownerWhatsAppNumber}?text=${text}`, '_blank');
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerWhatsAppNumber}&text=${text}`;
+    
+    const link = document.createElement('a');
+    link.href = whatsappUrl;
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     
     form.reset();
     onClose();
