@@ -66,4 +66,4 @@ const Footer: React.FC = () => {
   );
 };
 
-default export Footer; // Wait, right order is export default Footer
+export default Footer;
