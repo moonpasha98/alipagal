@@ -1,5 +1,23 @@
 import React from 'react';
 
+const galleryImages = [
+  {
+    id: 1,
+    title: "Bridal Look 1",
+    url: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    id: 2,
+    title: "Engagement Look",
+    url: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80&w=800"
+  },
+  {
+    id: 3,
+    title: "Party Glam Look",
+    url: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&q=80&w=800"
+  }
+];
+
 const Gallery: React.FC = () => {
   return (
     <section className="py-16 bg-[#FAF8F5] text-[#111111]" id="gallery">
@@ -13,15 +31,23 @@ const Gallery: React.FC = () => {
         <div className="w-16 h-0.5 bg-[#D4AF37] mx-auto mb-10"></div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <div className="bg-white border border-[#D4AF37]/30 h-64 rounded-2xl flex items-center justify-center text-[#AA771C] font-serif shadow-sm">
-            Bridal Look 1
-          </div>
-          <div className="bg-white border border-[#D4AF37]/30 h-64 rounded-2xl flex items-center justify-center text-[#AA771C] font-serif shadow-sm">
-            Engagement Look
-          </div>
-          <div className="bg-white border border-[#D4AF37]/30 h-64 rounded-2xl flex items-center justify-center text-[#AA771C] font-serif shadow-sm">
-            Party Glam Look
-          </div>
+          {galleryImages.map((image) => (
+            <div 
+              key={image.id}
+              className="relative group overflow-hidden rounded-2xl shadow-sm border border-[#D4AF37]/30 bg-white h-80"
+            >
+              <img 
+                src={image.url} 
+                alt={image.title} 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <h3 className="text-white font-serif text-lg font-medium tracking-wide">
+                  {image.title}
+                </h3>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
