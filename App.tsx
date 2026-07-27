@@ -1,69 +1,260 @@
 import React, { useState } from 'react';
-import Hero from './components/Hero';
-import BookingModal from './components/BookingModal';
 
+// ==========================================
+// 1. BOOKING MODAL COMPONENT
+// ==========================================
+function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = (formData.get('name') as string) || '';
+    const phone = (formData.get('phone') as string) || '';
+    const service = (formData.get('service') as string) || '';
+    const date = (formData.get('date') as string) || '';
+    const message = (formData.get('message') as string) || 'None';
+
+    // Aapka WhatsApp Number set hai
+    const ownerWhatsAppNumber = "918864843330";
+
+    const text = `*New Booking Request - Moon Pasha Studio*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
+
+    window.open(`https://wa.me/${ownerWhatsAppNumber}?text=${text}`, '_blank');
+    
+    form.reset();
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
+      <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-[#D4AF37]/30 relative">
+        <div className="bg-[#111111] text-white p-6 relative">
+          <button 
+            type="button" 
+            onClick={onClose} 
+            className="absolute top-5 right-5 text-gray-400 hover:text-white bg-white/10 w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold cursor-pointer transition-colors"
+          >
+            ✕
+          </button>
+          <p className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest mb-1">
+            Moon Pasha Makeup Studio
+          </p>
+          <h3 className="font-serif text-2xl font-bold text-white">
+            Book Your Appointment
+          </h3>
+        </div>
+
+        <div className="p-6 md:p-8">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Your Full Name</label>
+              <input type="text" name="name" required placeholder="Enter your name" className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]" />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Phone Number</label>
+              <input type="tel" name="phone" required placeholder="Enter your mobile number" className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Select Service</label>
+                <select name="service" className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]">
+                  <option value="HD Bridal Makeup">HD Bridal Makeup</option>
+                  <option value="Party & Guest Makeup">Party & Guest Makeup</option>
+                  <option value="Engagement & Reception Look">Engagement & Reception Look</option>
+                  <option value="Pre-Bridal Package">Pre-Bridal Package</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Preferred Date</label>
+                <input type="date" name="date" required className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]" />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">Special Notes</label>
+              <textarea name="message" rows={3} placeholder="Any specific requirements..." className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"></textarea>
+            </div>
+
+            <button type="submit" className="w-full py-3.5 bg-[#25D366] hover:bg-[#20ba5a] text-white text-sm font-semibold rounded-xl shadow-md cursor-pointer transition-colors">
+              Send Booking via WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
+// 2. NAVBAR COMPONENT
+// ==========================================
+function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  return (
+    <nav className="bg-[#111111]/90 backdrop-blur-md text-white sticky top-0 z-40 border-b border-[#D4AF37]/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          <a href="#" className="flex flex-col">
+            <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-white">MOON PASHA</span>
+            <span className="text-[10px] text-[#AA771C] uppercase tracking-[0.25em] font-medium -mt-1">Makeup Studio</span>
+          </a>
+
+          <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            <a href="#services" className="text-gray-300 hover:text-[#AA771C] transition-colors">Services</a>
+            <a href="#faq" className="text-gray-300 hover:text-[#AA771C] transition-colors">FAQ</a>
+          </div>
+
+          <div className="hidden md:flex items-center">
+            <button type="button" onClick={onOpenBooking} className="px-5 py-2.5 bg-[#AA771C] hover:bg-[#916216] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer">
+              Book Now
+            </button>
+          </div>
+
+          <div className="md:hidden flex items-center">
+            <button type="button" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-gray-300 hover:text-white">
+              {mobileMenuOpen ? '✕' : '☰'}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-[#161616] border-b border-[#D4AF37]/20 px-4 pt-4 pb-6 space-y-3">
+          <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block text-gray-300 hover:text-[#AA771C] text-sm py-2">Services</a>
+          <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-gray-300 hover:text-[#AA771C] text-sm py-2">FAQ</a>
+          <button type="button" onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }} className="w-full py-3 bg-[#AA771C] hover:bg-[#916216] text-white text-xs font-semibold uppercase tracking-wider rounded-xl cursor-pointer">
+            Book Now
+          </button>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// ==========================================
+// 3. HERO COMPONENT
+// ==========================================
+function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
+  return (
+    <section className="relative bg-[#111111] text-white py-20 md:py-28 px-4 overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#AA771C]/15 blur-3xl rounded-full pointer-events-none" />
+      <div className="max-w-4xl mx-auto text-center space-y-6 relative z-10">
+        <span className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest bg-[#AA771C]/10 px-4 py-2 rounded-full border border-[#AA771C]/30 inline-block">
+          Moon Pasha Makeup Studio
+        </span>
+        <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
+          Enhance Your Natural Beauty <br className="hidden sm:inline" /> For Every Special Occasion
+        </h1>
+        <p className="text-gray-300 text-sm md:text-base max-w-2xl mx-auto font-light leading-relaxed">
+          Bridal, party, aur engagement ke liye professional makeup services jo aapke har khas pal ko aur bhi yaadgar bana dein.
+        </p>
+        <div className="pt-4 flex justify-center">
+          <button type="button" onClick={onOpenBooking} className="px-8 py-4 bg-[#AA771C] hover:bg-[#916216] text-white font-medium rounded-2xl shadow-lg transition-all text-sm uppercase tracking-wider cursor-pointer">
+            Book Your Appointment
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 4. SERVICES COMPONENT
+// ==========================================
+function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
+  const servicesList = [
+    { title: "HD Bridal Makeup", price: "Premium Look", desc: "Complete bridal transformation including hair styling, dupatta draping, and HD finish." },
+    { title: "Engagement & Reception", price: "Glam Look", desc: "Elegant and long-lasting makeup tailored specifically for your special pre-wedding functions." },
+    { title: "Party & Guest Makeup", price: "Soft & Subtle", desc: "Glowy, radiant makeup for wedding guests, bridesmaids, and special parties." }
+  ];
+
+  return (
+    <section id="services" className="py-20 bg-[#FAF8F5] px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center space-y-2 mb-12">
+          <span className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest">Our Offerings</span>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">Featured Services</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {servicesList.map((srv, idx) => (
+            <div key={idx} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 space-y-4 hover:shadow-md transition-shadow">
+              <span className="text-xs font-semibold text-[#AA771C] uppercase tracking-wider">{srv.price}</span>
+              <h3 className="font-serif text-2xl font-bold text-gray-900">{srv.title}</h3>
+              <p className="text-gray-600 text-sm leading-relaxed">{srv.desc}</p>
+              <button type="button" onClick={onOpenBooking} className="w-full py-3 bg-[#111111] hover:bg-[#AA771C] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors cursor-pointer">
+                Book Service
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 5. FAQ COMPONENT
+// ==========================================
+function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    { question: "What is included in the HD Bridal Makeup package?", answer: "Our HD Bridal Makeup package includes complete skin preparation, HD foundation application, eye makeup with lashes, premium hairstyling, and dupatta draping." },
+    { question: "Do you provide trial makeup sessions?", answer: "Yes, we do provide trial sessions so you can finalize your look before the big day." },
+    { question: "Do you travel to the venue?", answer: "Yes! We offer both studio visits and venue travel services for your convenience." }
+  ];
+
+  return (
+    <section id="faq" className="py-16 px-4 max-w-4xl mx-auto">
+      <div className="text-center space-y-3 mb-12">
+        <h2 className="font-serif text-3xl md:text-4xl font-bold">Frequently Asked Questions</h2>
+      </div>
+
+      <div className="space-y-4">
+        {faqs.map((faq, index) => (
+          <div key={index} className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
+            <button type="button" onClick={() => setOpenIndex(openIndex === index ? null : index)} className="w-full px-6 py-4 text-left flex justify-between items-center font-semibold text-base">
+              <span>{faq.question}</span>
+              <span className="text-xl text-[#AA771C]">{openIndex === index ? '−' : '+'}</span>
+            </button>
+            {openIndex === index && (
+              <div className="px-6 pb-4 text-gray-600 text-sm border-t border-gray-100 pt-3">
+                {faq.answer}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 6. MAIN APP COMPONENT (DEFAULT EXPORT)
+// ==========================================
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-[#111111] font-sans">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-white text-gray-900 font-sans antialiased">
+      <Navbar onOpenBooking={() => setIsBookingOpen(true)} />
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
+      <Services onOpenBooking={() => setIsBookingOpen(true)} />
+      <FAQ />
 
-      {/* Services / Pricing Section Banner or Buttons */}
-      <section className="py-16 px-4 max-w-6xl mx-auto text-center space-y-8">
-        <h2 className="font-serif text-3xl md:text-4xl font-bold">
-          Our Premium Services & Pricing
-        </h2>
-        <p className="text-gray-600 text-sm max-w-xl mx-auto">
-          Choose from our exclusive bridal and party makeup packages tailored just for you.
-        </p>
-        
-        {/* Sample Service Cards with Book Button */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200 space-y-4">
-            <h3 className="font-serif text-xl font-bold">HD Bridal Makeup</h3>
-            <p className="text-[#AA771C] font-semibold text-lg">₹15,000</p>
-            <p className="text-gray-500 text-xs">Complete bridal look with HD finish, hairstyling, and draping.</p>
-            <button
-              onClick={() => setIsBookingOpen(true)}
-              className="w-full py-2.5 bg-[#111111] hover:bg-[#AA771C] text-white text-xs uppercase tracking-wider rounded-xl transition-colors font-medium"
-            >
-              Book Service
-            </button>
-          </div>
+      <footer className="bg-[#111111] text-gray-400 py-8 text-center text-xs border-t border-gray-800">
+        <p>© Moon Pasha Makeup Studio. All Rights Reserved.</p>
+      </footer>
 
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200 space-y-4">
-            <h3 className="font-serif text-xl font-bold">Party & Guest Makeup</h3>
-            <p className="text-[#AA771C] font-semibold text-lg">₹4,500</p>
-            <p className="text-gray-500 text-xs">Flawless party look suitable for receptions and celebrations.</p>
-            <button
-              onClick={() => setIsBookingOpen(true)}
-              className="w-full py-2.5 bg-[#111111] hover:bg-[#AA771C] text-white text-xs uppercase tracking-wider rounded-xl transition-colors font-medium"
-            >
-              Book Service
-            </button>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200 space-y-4">
-            <h3 className="font-serif text-xl font-bold">Engagement Look</h3>
-            <p className="text-[#AA771C] font-semibold text-lg">₹10,000</p>
-            <p className="text-gray-500 text-xs">Special glam look designed to make you shine on your engagement day.</p>
-            <button
-              onClick={() => setIsBookingOpen(true)}
-              className="w-full py-2.5 bg-[#111111] hover:bg-[#AA771C] text-white text-xs uppercase tracking-wider rounded-xl transition-colors font-medium"
-            >
-              Book Service
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Booking Modal Component */}
-      <BookingModal 
-        isOpen={isBookingOpen} 
-        onClose={() => setIsBookingOpen(false)} 
-      />
+      <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
   );
 }
