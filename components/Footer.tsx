@@ -60,10 +60,10 @@ const Footer: React.FC = () => {
 
       {/* Bottom Copyright */}
       <div className="max-w-6xl mx-auto pt-8 border-t border-gray-800 text-center text-xs text-gray-500">
-        <p>© {new Date().getFullYear()} Moon Pasha Makeup Studio. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} Moon Pasha Makeup Studio. All rights reserved.</p>
       </div>
     </footer>
   );
 };
 
-export default Footer;
+default export Footer; // Wait, right order is export default Footer
