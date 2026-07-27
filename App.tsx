@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import WhatsAppButton from './components/WhatsAppButton';
 import Navbar from './components/Navbar';
 import Hero from './components/hero';
-import Gallery from './components/Gallery';
-import Testimonials from './components/Testimonials';
 import Services from './components/Services';
-import BookingModal from './components/BookingModal';
+import Gallery from './components/Gallery';
 import FAQ from './components/FAQ';
 import Location from './components/Location';
+import Testimonials from './components/Testimonials';
 import Footer from './components/Footer';
+import BookingModal from './components/BookingModal';
 
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
