@@ -64,6 +64,7 @@ function BookingModal({ isOpen, onClose, ownerPhone }: { isOpen: boolean; onClos
                   <option value="Party & Guest Makeup">Party & Guest Makeup</option>
                   <option value="Engagement & Reception Look">Engagement & Reception Look</option>
                   <option value="Pre-Bridal Package">Pre-Bridal Package</option>
+                  <option value="Hair Styling & Spa">Hair Styling & Spa</option>
                 </select>
               </div>
 
@@ -114,6 +115,8 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
 
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-700">
             <a href="#services" className="hover:text-[#C59B27] transition-colors">Services</a>
+            <a href="#gallery" className="hover:text-[#C59B27] transition-colors">Gallery</a>
+            <a href="#reviews" className="hover:text-[#C59B27] transition-colors">Reviews</a>
             <a href="#faq" className="hover:text-[#C59B27] transition-colors">FAQs</a>
             <a href="#contact" className="hover:text-[#C59B27] transition-colors">Contact</a>
           </div>
@@ -139,6 +142,8 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#FAF6F0] border-b border-gray-200 px-4 pt-4 pb-6 space-y-3">
           <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Services</a>
+          <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Gallery</a>
+          <a href="#reviews" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Reviews</a>
           <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">FAQs</a>
           <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block text-gray-800 text-sm py-2 font-medium">Contact</a>
           <button type="button" onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }} className="w-full py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider rounded-full cursor-pointer">
@@ -164,7 +169,7 @@ function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
           Enhance Your Natural Beauty <br className="hidden sm:inline" /> For Every Special Occasion
         </h1>
         <p className="text-gray-600 text-sm md:text-base max-w-2xl mx-auto font-normal leading-relaxed">
-          Bridal, party, aur engagement ke liye professional makeup services jo aapke har khas pal ko aur bhi yaadgar bana dein.
+          Bridal, party, aur engagement ke liye professional makeup & salon services jo aapke har khas pal ko aur bhi yaadgar bana dein.
         </p>
         <div className="pt-4 flex justify-center">
           <button type="button" onClick={onOpenBooking} className="px-8 py-4 bg-[#111111] hover:bg-[#C59B27] text-white font-medium rounded-full shadow-lg transition-all text-xs uppercase tracking-widest cursor-pointer">
@@ -183,7 +188,8 @@ function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
   const servicesList = [
     { title: "HD Bridal Makeup", price: "PREMIUM LOOK", desc: "Complete bridal transformation including skin prep, hair styling, dupatta draping, and HD long-lasting finish." },
     { title: "Engagement & Reception", price: "GLAM LOOK", desc: "Elegant and radiant makeup tailored specifically for your special pre-wedding and post-wedding functions." },
-    { title: "Party & Guest Makeup", price: "SOFT & SUBTLE", desc: "Glowy, soft glam makeup for wedding guests, bridesmaids, and special evening celebrations." }
+    { title: "Party & Guest Makeup", price: "SOFT & SUBTLE", desc: "Glowy, soft glam makeup for wedding guests, bridesmaids, and special evening celebrations." },
+    { title: "Hair Styling & Care", price: "SALON SPECIAL", desc: "Professional hair extensions, bridal buns, curls, blow-dry, and deep conditioning treatments." }
   ];
 
   return (
@@ -194,13 +200,15 @@ function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
           <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">Featured Services</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {servicesList.map((srv, idx) => (
-            <div key={idx} className="bg-white p-8 rounded-3xl shadow-sm border border-gray-200/80 space-y-4 hover:shadow-md transition-shadow">
-              <span className="text-xs font-semibold text-[#C59B27] uppercase tracking-wider">{srv.price}</span>
-              <h3 className="font-serif text-2xl font-bold text-gray-900">{srv.title}</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">{srv.desc}</p>
-              <button type="button" onClick={onOpenBooking} className="w-full py-3 bg-[#111111] hover:bg-[#C59B27] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors cursor-pointer">
+            <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200/80 flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div className="space-y-3">
+                <span className="text-[11px] font-semibold text-[#C59B27] uppercase tracking-wider">{srv.price}</span>
+                <h3 className="font-serif text-xl font-bold text-gray-900">{srv.title}</h3>
+                <p className="text-gray-600 text-xs leading-relaxed">{srv.desc}</p>
+              </div>
+              <button type="button" onClick={onOpenBooking} className="mt-6 w-full py-2.5 bg-[#111111] hover:bg-[#C59B27] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-colors cursor-pointer">
                 Book Service
               </button>
             </div>
@@ -212,7 +220,140 @@ function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 5. FAQ COMPONENT
+// 5. GALLERY COMPONENT (WITH ALL CUSTOM IMAGES)
+// ==========================================
+function Gallery() {
+  const photos = [
+    {
+      title: "Royal HD Bridal Look",
+      category: "Bridal Makeup",
+      img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Glamour Hair & Makeup",
+      category: "Beauty Studio",
+      img: "https://dreamgirlsbc.com/wp-content/uploads/2020/03/44652407_ml-banner.jpg"
+    },
+    {
+      title: "Professional Visage Studio",
+      category: "Makeup Artistry",
+      img: "https://as2.ftcdn.net/v2/jpg/04/92/44/73/1000_F_492447303_p5YKirpVlE2vdYybFuYM094r5mEnoATk.jpg"
+    },
+    {
+      title: "Luxury Studio Ambience",
+      category: "Studio & Salon",
+      img: "https://framerusercontent.com/images/TPCEohdAFwj5xUT10NR9pNS8Ho.png"
+    },
+    {
+      title: "Soft Glam Eye Art",
+      category: "Eye Makeup",
+      img: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&q=80&w=800"
+    },
+    {
+      title: "Bridal Hair Styling",
+      category: "Salon Services",
+      img: "https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&q=80&w=800"
+    }
+  ];
+
+  return (
+    <section id="gallery" className="py-20 bg-white px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center space-y-2 mb-12">
+          <span className="text-[#C59B27] text-xs font-semibold uppercase tracking-widest">Our Work & Gallery</span>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">Bridal & Salon Gallery</h2>
+          <p className="text-gray-500 text-xs sm:text-sm max-w-lg mx-auto">Explore our high-definition makeup looks, hair transformations, and studio aesthetic.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {photos.map((item, idx) => (
+            <div key={idx} className="group relative rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-[#FAF6F0]">
+              <div className="aspect-[4/5] overflow-hidden">
+                <img 
+                  src={item.img} 
+                  alt={item.title} 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-4 bg-white border-t border-gray-100">
+                <span className="text-[10px] font-semibold text-[#C59B27] uppercase tracking-wider block">{item.category}</span>
+                <h3 className="font-serif text-base font-bold text-gray-900 mt-0.5">{item.title}</h3>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 6. REVIEWS / TESTIMONIALS COMPONENT
+// ==========================================
+function Reviews() {
+  const reviewsList = [
+    {
+      name: "Ananya Sharma",
+      role: "Bride",
+      review: "Nandini ma'am gave me the exact HD bridal look I wished for! The makeup lasted all night without getting cakey. Everyone loved my look!",
+      rating: 5,
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      name: "Priya Verma",
+      role: "Engagement Bride",
+      review: "Amazing experience at The Bridal Villa! Very professional service, clean studio, and stunning hair styling. Highly recommended in Amroha!",
+      rating: 5,
+      avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200"
+    },
+    {
+      name: "Ritu Singh",
+      role: "Party Guest",
+      review: "Booked party makeup for my sister's wedding. Soft glam look matched my lehenga perfectly. Will definitely visit again!",
+      rating: 5,
+      avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=200"
+    }
+  ];
+
+  return (
+    <section id="reviews" className="py-20 bg-[#FAF6F0] px-4">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center space-y-2 mb-12">
+          <span className="text-[#C59B27] text-xs font-semibold uppercase tracking-widest">Happy Clients</span>
+          <h2 className="font-serif text-3xl md:text-4xl font-bold text-gray-900">What Our Brides Say</h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {reviewsList.map((rev, idx) => (
+            <div key={idx} className="bg-white p-6 rounded-3xl shadow-sm border border-gray-200/80 flex flex-col justify-between space-y-4">
+              <div className="space-y-3">
+                <div className="flex items-center space-x-1 text-[#C59B27]">
+                  {Array.from({ length: rev.rating }).map((_, i) => (
+                    <span key={i} className="text-lg">★</span>
+                  ))}
+                </div>
+                <p className="text-gray-600 text-xs sm:text-sm leading-relaxed italic">
+                  "{rev.review}"
+                </p>
+              </div>
+
+              <div className="flex items-center space-x-3 pt-4 border-t border-gray-100">
+                <img src={rev.avatar} alt={rev.name} className="w-10 h-10 rounded-full object-cover border border-[#C59B27]" />
+                <div>
+                  <h4 className="font-serif text-sm font-bold text-gray-900">{rev.name}</h4>
+                  <span className="text-[10px] text-[#C59B27] uppercase font-semibold">{rev.role}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 7. FAQ COMPONENT
 // ==========================================
 function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -249,7 +390,7 @@ function FAQ() {
 }
 
 // ==========================================
-// 6. FOOTER COMPONENT
+// 8. FOOTER COMPONENT
 // ==========================================
 function Footer({ ownerPhone }: { ownerPhone: string }) {
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}`;
@@ -266,7 +407,7 @@ function Footer({ ownerPhone }: { ownerPhone: string }) {
             By Nandini Dhingra
           </p>
           <p className="text-gray-400 text-sm leading-relaxed max-w-sm pt-1">
-            Aapke har khaas mauke (Bridal, Engagement & Party) ko aur bhi zyada khoobsurat banane ke liye professional makeup services.
+            Aapke har khaas mauke (Bridal, Engagement & Party) ko aur bhi zyada khoobsurat banane ke liye professional makeup & salon services.
           </p>
         </div>
 
@@ -274,8 +415,9 @@ function Footer({ ownerPhone }: { ownerPhone: string }) {
           <h4 className="font-serif text-lg font-semibold text-white">Quick Links</h4>
           <ul className="space-y-2 text-sm text-gray-400">
             <li><a href="#services" className="hover:text-[#C59B27] transition-colors">Our Services</a></li>
+            <li><a href="#gallery" className="hover:text-[#C59B27] transition-colors">Gallery</a></li>
+            <li><a href="#reviews" className="hover:text-[#C59B27] transition-colors">Client Reviews</a></li>
             <li><a href="#faq" className="hover:text-[#C59B27] transition-colors">FAQs</a></li>
-            <li><a href="#contact" className="hover:text-[#C59B27] transition-colors">Visit Studio</a></li>
           </ul>
         </div>
 
@@ -311,17 +453,19 @@ function Footer({ ownerPhone }: { ownerPhone: string }) {
 }
 
 // ==========================================
-// 7. MAIN APP COMPONENT
+// 9. MAIN APP COMPONENT
 // ==========================================
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const ownerPhone = '918864843330'; // Fixed Permanent Number
+  const ownerPhone = '918864843330';
 
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-gray-900 font-sans antialiased relative">
       <Navbar onOpenBooking={() => setIsBookingOpen(true)} />
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
       <Services onOpenBooking={() => setIsBookingOpen(true)} />
+      <Gallery />
+      <Reviews />
       <FAQ />
       <Footer ownerPhone={ownerPhone} />
 
@@ -334,7 +478,7 @@ export default function App() {
         aria-label="WhatsApp Us"
       >
         <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
         </svg>
       </a>
 
