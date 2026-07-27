@@ -1,78 +1,74 @@
 import React, { useState } from 'react';
 
-const FAQ: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+interface FaqItem {
+  question: string;
+  answer: string;
+}
 
-  const faqs = [
+export default function Faq() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs: FaqItem[] = [
     {
-      question: "Kya aap bridal trial makeup provide karte hain?",
-      answer: "Haan, hum bridal trial provide karte hain taaki aap apne big day ke liye apna perfect look pehle se finalize kar sakein. Trial ke liye aap pehle se appointment book kar sakte hain."
+      question: "What is included in the HD Bridal Makeup package?",
+      answer: "Our HD Bridal Makeup package includes complete skin preparation, HD foundation application, eye makeup with lashes, premium hairstyling, saree/dupatta draping, and finishing touch-ups to ensure you look flawless all day."
     },
     {
-      question: "Aap makeup ke liye kaun se brands use karte hain?",
-      answer: "Hum sirf 100% authentic aur luxury high-end brands use karte hain jaise ki MAC, Huda Beauty, Bobbi Brown, NARS, Charlotte Tilbury, aur Forever52."
+      question: "Do you provide trial makeup sessions?",
+      answer: "Yes, we do provide trial sessions so you can finalize your look before the big day. You can discuss your preferences and skin type with our artist during the trial."
     },
     {
-      question: "Booking confirm karne ke liye kitna advance dena hota hai?",
-      answer: "Appointment confirm karne ke liye 30% advance payment deni hoti hai, jo ki non-refundable hoti hai. Bacha hua payment makeup complete hone ke baad kiya jata hai."
+      question: "Do you travel to the venue or do we need to visit the studio?",
+      answer: "We offer both options! You can visit our professional studio, or our artist team can travel directly to your wedding venue or home for your convenience."
     },
     {
-      question: "Kya aap venue par (destination makeup ke liye) travel karte hain?",
-      answer: "Ji haan, hum bridal ya party makeup ke liye aapke venue (hotel, wedding hall ya ghar) par travel karte hain. Iske liye extra travel charges location ke hisab se hote hain."
-    },
-    {
-      question: "Mujhe apni booking ke liye kitne din pehle contact karna chahiye?",
-      answer: "Wedding season mein dates jaldi full ho jaati hain, isliye hum suggest karte hain ki aap kam se kam 1 ya 2 mahine pehle apni date secure kar lein."
+      question: "How far in advance should I book my bridal appointment?",
+      answer: "We recommend booking your bridal makeup at least 2 to 3 months in advance, especially during the peak wedding season, to secure your preferred date and time."
     }
   ];
 
-  const toggleFAQ = (index: number) => {
+  const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
   return (
-    <section className="py-20 px-4 bg-white">
-      <div className="max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-xs font-semibold text-[#AA771C] uppercase tracking-widest mb-2">
-            Got Questions?
-          </p>
-          <h2 className="font-serif text-3xl md:text-4xl font-bold text-[#111111]">
-            Frequently Asked Questions
-          </h2>
-          <div className="w-16 h-0.5 bg-[#D4AF37] mx-auto mt-3"></div>
-        </div>
+    <section className="py-16 px-4 max-w-4xl mx-auto">
+      <div className="text-center space-y-3 mb-12">
+        <span className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest bg-[#AA771C]/10 px-4 py-1.5 rounded-full border border-[#AA771C]/30 inline-block">
+          Got Questions?
+        </span>
+        <h2 className="font-serif text-3xl md:text-4xl font-bold">
+          Frequently Asked Questions
+        </h2>
+        <p className="text-gray-600 text-sm max-w-md mx-auto">
+          Yahan aapko apni booking aur makeup packages se jude har sawal ka jawab mil jayega.
+        </p>
+      </div>
 
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div 
-              key={index}
-              className="border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all duration-300 hover:border-[#D4AF37]"
+      <div className="space-y-4">
+        {faqs.map((faq, index) => (
+          <div 
+            key={index}
+            className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm transition-all"
+          >
+            <button
+              onClick={() => toggleFaq(index)}
+              className="w-full px-6 py-4 text-left flex justify-between items-center font-serif font-semibold text-base md:text-lg hover:text-[#AA771C] transition-colors"
             >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full text-left px-6 py-4 flex justify-between items-center bg-[#FAF8F5]/50 hover:bg-[#FAF8F5] transition-colors"
-                type="button"
-              >
-                <span className="font-medium text-[#111111] text-base md:text-lg">
-                  {faq.question}
-                </span>
-                <span className="text-[#AA771C] font-bold text-xl ml-4">
-                  {openIndex === index ? '−' : '+'}
-                </span>
-              </button>
-
-              {openIndex === index && (
-                <div className="px-6 py-4 bg-white text-gray-600 text-sm md:text-base border-t border-gray-100 leading-relaxed">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+              <span>{faq.question}</span>
+              <span className="text-xl font-bold text-[#AA771C] ml-4">
+                {openIndex === index ? '−' : '+'}
+              </span>
+            </button>
+            
+            {openIndex === index && (
+              <div className="px-6 pb-4 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-3">
+                {faq.answer}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </section>
   );
-};
-
-export default FAQ;
+}
