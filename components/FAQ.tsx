@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 
-interface FaqItem {
-  question: string;
-  answer: string;
-}
-
 const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const faqs: FaqItem[] = [
+  const faqs = [
     {
       question: "Kya aap bridal trial makeup provide karte hain?",
       answer: "Haan, hum bridal trial provide karte hain taaki aap apne big day ke liye apna perfect look pehle se finalize kar sakein. Trial ke liye aap pehle se appointment book kar sakte hain."
@@ -57,6 +52,7 @@ const FAQ: React.FC = () => {
               <button
                 onClick={() => toggleFAQ(index)}
                 className="w-full text-left px-6 py-4 flex justify-between items-center bg-[#FAF8F5]/50 hover:bg-[#FAF8F5] transition-colors"
+                type="button"
               >
                 <span className="font-medium text-[#111111] text-base md:text-lg">
                   {faq.question}
