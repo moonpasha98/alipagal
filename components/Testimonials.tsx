@@ -4,6 +4,7 @@ interface Review {
   id: number;
   name: string;
   role: string;
+
   comment: string;
   rating: number;
   image: string;
