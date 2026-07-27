@@ -17,12 +17,11 @@ function BookingModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
     const date = (formData.get('date') as string) || '';
     const message = (formData.get('message') as string) || 'None';
 
-    // Aapka WhatsApp Number set hai
     const ownerWhatsAppNumber = "918864843330";
 
     const text = `*New Booking Request - Moon Pasha Studio*%0A%0A*Name:* ${name}%0A*Phone:* ${phone}%0A*Service:* ${service}%0A*Date:* ${date}%0A*Notes:* ${message}`;
 
-    window.open(`https://wa.me/${ownerWhatsAppNumber}?text=${text}`, '_blank');
+    window.open(`https://api.whatsapp.com/send?phone=${ownerWhatsAppNumber}&text=${text}`, '_blank');
     
     form.reset();
     onClose();
@@ -109,11 +108,12 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
             <a href="#services" className="text-gray-300 hover:text-[#AA771C] transition-colors">Services</a>
             <a href="#faq" className="text-gray-300 hover:text-[#AA771C] transition-colors">FAQ</a>
+            <a href="#contact" className="text-gray-300 hover:text-[#AA771C] transition-colors">Contact</a>
           </div>
 
           <div className="hidden md:flex items-center">
             <button type="button" onClick={onOpenBooking} className="px-5 py-2.5 bg-[#AA771C] hover:bg-[#916216] text-white text-xs font-semibold uppercase tracking-wider rounded-xl transition-all shadow-md cursor-pointer">
-              Book Now
+              Book Appointment
             </button>
           </div>
 
@@ -129,8 +129,9 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
         <div className="md:hidden bg-[#161616] border-b border-[#D4AF37]/20 px-4 pt-4 pb-6 space-y-3">
           <a href="#services" onClick={() => setMobileMenuOpen(false)} className="block text-gray-300 hover:text-[#AA771C] text-sm py-2">Services</a>
           <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="block text-gray-300 hover:text-[#AA771C] text-sm py-2">FAQ</a>
+          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="block text-gray-300 hover:text-[#AA771C] text-sm py-2">Contact</a>
           <button type="button" onClick={() => { setMobileMenuOpen(false); onOpenBooking(); }} className="w-full py-3 bg-[#AA771C] hover:bg-[#916216] text-white text-xs font-semibold uppercase tracking-wider rounded-xl cursor-pointer">
-            Book Now
+            Book Appointment
           </button>
         </div>
       )}
@@ -238,21 +239,94 @@ function FAQ() {
 }
 
 // ==========================================
-// 6. MAIN APP COMPONENT (DEFAULT EXPORT)
+// 6. FOOTER COMPONENT (UPDATED WITH YOUR NO.)
+// ==========================================
+function Footer() {
+  const ownerNumber = "88648 43330";
+  const whatsappUrl = "https://api.whatsapp.com/send?phone=918864843330";
+
+  return (
+    <footer id="contact" className="bg-[#111111] text-white pt-16 pb-8 border-t border-gray-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-10 pb-12">
+        
+        {/* Brand Description */}
+        <div className="space-y-4">
+          <h3 className="font-serif text-2xl font-bold">
+            Moon Pasha <span className="text-[#AA771C]">Makeup Studio</span>
+          </h3>
+          <p className="text-gray-400 text-sm leading-relaxed max-w-sm">
+            Aapke har khaas mauke (Bridal, Engagement & Party) ko aur bhi zyada khoobsurat banane ke liye professional makeup services.
+          </p>
+        </div>
+
+        {/* Quick Links */}
+        <div className="space-y-3">
+          <h4 className="font-serif text-lg font-semibold text-white">Quick Links</h4>
+          <ul className="space-y-2 text-sm text-gray-400">
+            <li><a href="#services" className="hover:text-[#AA771C] transition-colors">Our Services</a></li>
+            <li><a href="#faq" className="hover:text-[#AA771C] transition-colors">FAQs</a></li>
+            <li><a href="#contact" className="hover:text-[#AA771C] transition-colors">Visit Studio</a></li>
+          </ul>
+        </div>
+
+        {/* Contact Us - Number Updated Here */}
+        <div className="space-y-3">
+          <h4 className="font-serif text-lg font-semibold text-white">Contact Us</h4>
+          <p className="text-sm text-gray-400">
+            <strong className="text-white">Address:</strong><br />
+            Kailsa Rd, near Mld Spices Company, Vivekanand Nagar, Amroha, Uttar Pradesh 244221
+          </p>
+          <p className="text-sm text-gray-400">
+            <strong className="text-white">Phone:</strong> +91 {ownerNumber}
+          </p>
+
+          <div className="flex space-x-3 pt-2">
+            <a 
+              href={whatsappUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="px-4 py-2 bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs font-semibold rounded-lg transition-colors inline-block"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div className="text-center text-xs text-gray-500 border-t border-gray-800/80 pt-6">
+        © 2026 Moon Pasha Makeup Studio. All rights reserved.
+      </div>
+    </footer>
+  );
+}
+
+// ==========================================
+// 7. MAIN APP COMPONENT (DEFAULT EXPORT)
 // ==========================================
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans antialiased">
+    <div className="min-h-screen bg-white text-gray-900 font-sans antialiased relative">
       <Navbar onOpenBooking={() => setIsBookingOpen(true)} />
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
       <Services onOpenBooking={() => setIsBookingOpen(true)} />
       <FAQ />
+      <Footer />
 
-      <footer className="bg-[#111111] text-gray-400 py-8 text-center text-xs border-t border-gray-800">
-        <p>© Moon Pasha Makeup Studio. All Rights Reserved.</p>
-      </footer>
+      {/* Floating WhatsApp Button at Bottom Right */}
+      <a
+        href="https://api.whatsapp.com/send?phone=918864843330"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-40 bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 rounded-full shadow-2xl transition-transform hover:scale-110 flex items-center justify-center"
+        aria-label="WhatsApp Us"
+      >
+        <svg className="w-7 h-7 fill-current" viewBox="0 0 24 24">
+          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+        </svg>
+      </a>
 
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
