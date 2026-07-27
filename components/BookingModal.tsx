@@ -1,12 +1,11 @@
- import React, { useState } from 'react';
-import { X, CheckCircle, Calendar, User, Phone, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
+export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -42,21 +41,21 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
       <div className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden border border-[#D4AF37]/30 relative">
         
         {/* Header */}
         <div className="bg-[#111111] text-white p-6 relative">
           <button 
+            type="button"
             onClick={onClose}
-            className="absolute top-5 right-5 text-gray-400 hover:text-white bg-white/10 p-2 rounded-full transition-colors"
+            className="absolute top-5 right-5 text-gray-400 hover:text-white bg-white/10 px-3 py-1 rounded-full text-sm font-bold transition-colors"
           >
-            <X className="w-5 h-5" />
+            ✕
           </button>
-          <div className="flex items-center space-x-2 text-[#AA771C] text-xs font-semibold uppercase tracking-widest mb-1">
-            <Sparkles className="w-4 h-4" />
-            <span>Moon Pasha Makeup Studio</span>
-          </div>
+          <p className="text-[#AA771C] text-xs font-semibold uppercase tracking-widest mb-1">
+            Moon Pasha Makeup Studio
+          </p>
           <h3 className="font-serif text-2xl font-bold text-white">
             Book Your Appointment
           </h3>
@@ -69,8 +68,8 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
         <div className="p-6 md:p-8">
           {submitted ? (
             <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
-                <CheckCircle className="w-10 h-10" />
+              <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                ✓
               </div>
               <h4 className="font-serif text-2xl font-bold text-[#111111]">
                 Booking Request Sent!
@@ -79,6 +78,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 Aapki booking request humein mil gayi hai. Hum jald hi aapko call ya WhatsApp par confirm karenge.
               </p>
               <button
+                type="button"
                 onClick={() => {
                   setSubmitted(false);
                   onClose();
@@ -94,32 +94,26 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                 <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
                   Your Full Name
                 </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
-                  <input 
-                    type="text" 
-                    name="name" 
-                    required 
-                    placeholder="Enter your name"
-                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
-                  />
-                </div>
+                <input 
+                  type="text" 
+                  name="name" 
+                  required 
+                  placeholder="Enter your name"
+                  className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
                   Phone Number (WhatsApp preferred)
                 </label>
-                <div className="relative">
-                  <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
-                  <input 
-                    type="tel" 
-                    name="phone" 
-                    required 
-                    placeholder="Enter your mobile number"
-                    className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
-                  />
-                </div>
+                <input 
+                  type="tel" 
+                  name="phone" 
+                  required 
+                  placeholder="Enter your mobile number"
+                  className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -142,15 +136,12 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
                   <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
                     Preferred Date
                   </label>
-                  <div className="relative">
-                    <Calendar className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
-                    <input 
-                      type="date" 
-                      name="date" 
-                      required 
-                      className="w-full pl-10 pr-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
-                    />
-                  </div>
+                  <input 
+                    type="date" 
+                    name="date" 
+                    required 
+                    className="w-full px-4 py-3 bg-[#FAF8F5] border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#AA771C]"
+                  />
                 </div>
               </div>
 
@@ -180,6 +171,4 @@ const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
-};
-
-export default BookingModal; 
+}
