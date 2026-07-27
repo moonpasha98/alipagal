@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/hero';
 import Gallery from './components/Gallery';
+import Testimonials from './components/Testimonials';
 
 export default function App() {
   return (
@@ -9,6 +10,7 @@ export default function App() {
       <Navbar onOpenBooking={() => alert('Booking system updating soon!')} />
       <Hero onOpenBooking={() => alert('Booking system updating soon!')} />
       <Gallery />
+      <Testimonials />
     </div>
   );
 }
