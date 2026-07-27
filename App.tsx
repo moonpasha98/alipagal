@@ -6,7 +6,9 @@ import Gallery from './components/Gallery';
 import Testimonials from './components/Testimonials';
 import Services from './components/Services';
 import BookingModal from './components/BookingModal';
-import FAQ from './components/FAQ'; // <-- Yeh line jodein
+import FAQ from './components/FAQ';
+import Location from './components/Location';
+import Footer from './components/Footer';
 
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -17,8 +19,10 @@ export default function App() {
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
       <Services />
       <Gallery />
-      <FAQ /> {/* <-- Yeh section yahan lagayein */}
+      <FAQ />
+      <Location />
       <Testimonials />
+      <Footer />
       <WhatsAppButton />
       <BookingModal isOpen={isBookingOpen} onClose={() => setIsBookingOpen(false)} />
     </div>
