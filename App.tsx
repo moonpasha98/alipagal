@@ -1,100 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // ==========================================
-// 1. ADMIN MODAL COMPONENT
-// ==========================================
-function AdminModal({ 
-  isOpen, 
-  onClose, 
-  currentPhone, 
-  onSavePhone 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  currentPhone: string; 
-  onSavePhone: (newPhone: string) => void; 
-}) {
-  const [pin, setPin] = useState('');
-  const [isAuthorized, setIsAuthorized] = useState(false);
-  const [phoneInput, setPhoneInput] = useState(currentPhone);
-
-  if (!isOpen) return null;
-
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pin === '1234') {
-      setIsAuthorized(true);
-    } else {
-      alert('Wrong PIN! Try again.');
-    }
-  };
-
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    const cleaned = phoneInput.replace(/[^0-9]/g, '');
-    if (cleaned.length < 10) {
-      alert('Please enter a valid 10-digit number!');
-      return;
-    }
-    onSavePhone(cleaned);
-    alert('WhatsApp Number Updated Successfully!');
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm text-gray-900">
-      <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative border border-[#C59B27]/30">
-        <button 
-          onClick={onClose} 
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-lg font-bold"
-        >
-          ✕
-        </button>
-
-        {!isAuthorized ? (
-          <form onSubmit={handleLogin} className="space-y-4">
-            <h3 className="font-serif text-xl font-bold text-gray-900 text-center">Admin Login</h3>
-            <p className="text-xs text-gray-500 text-center">Enter PIN to manage website settings</p>
-            <input 
-              type="password" 
-              placeholder="Enter PIN (Default: 1234)" 
-              value={pin}
-              onChange={(e) => setPin(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-xl text-center font-bold tracking-widest text-lg focus:outline-none focus:border-[#C59B27]"
-            />
-            <button type="submit" className="w-full py-3 bg-[#111111] text-white text-xs font-semibold uppercase tracking-wider rounded-xl">
-              Login
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleSave} className="space-y-4">
-            <h3 className="font-serif text-xl font-bold text-gray-900 text-center">Admin Dashboard</h3>
-            <div>
-              <label className="block text-xs font-semibold text-gray-700 uppercase mb-1">
-                WhatsApp Phone Number
-              </label>
-              <input 
-                type="text" 
-                value={phoneInput} 
-                onChange={(e) => setPhoneInput(e.target.value)}
-                placeholder="e.g. 918864843330" 
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl text-sm focus:outline-none focus:border-[#C59B27]"
-              />
-              <span className="text-[10px] text-gray-400 mt-1 block">Include country code (e.g., 918864843330)</span>
-            </div>
-
-            <button type="submit" className="w-full py-3 bg-[#25D366] text-white text-xs font-semibold uppercase tracking-wider rounded-xl shadow-md">
-              Save Changes
-            </button>
-          </form>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ==========================================
-// 2. BOOKING MODAL COMPONENT
+// 1. BOOKING MODAL COMPONENT
 // ==========================================
 function BookingModal({ isOpen, onClose, ownerPhone }: { isOpen: boolean; onClose: () => void; ownerPhone: string }) {
   if (!isOpen) return null;
@@ -182,7 +89,7 @@ function BookingModal({ isOpen, onClose, ownerPhone }: { isOpen: boolean; onClos
 }
 
 // ==========================================
-// 3. NAVBAR COMPONENT
+// 2. NAVBAR COMPONENT
 // ==========================================
 function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -244,7 +151,7 @@ function Navbar({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 4. HERO COMPONENT
+// 3. HERO COMPONENT
 // ==========================================
 function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
   return (
@@ -270,7 +177,7 @@ function Hero({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 5. SERVICES COMPONENT
+// 4. SERVICES COMPONENT
 // ==========================================
 function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
   const servicesList = [
@@ -305,7 +212,7 @@ function Services({ onOpenBooking }: { onOpenBooking: () => void }) {
 }
 
 // ==========================================
-// 6. FAQ COMPONENT
+// 5. FAQ COMPONENT
 // ==========================================
 function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -342,13 +249,10 @@ function FAQ() {
 }
 
 // ==========================================
-// 7. FOOTER COMPONENT
+// 6. FOOTER COMPONENT
 // ==========================================
-function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: () => void }) {
+function Footer({ ownerPhone }: { ownerPhone: string }) {
   const whatsappUrl = `https://api.whatsapp.com/send?phone=${ownerPhone}`;
-  
-  // Format phone number for UI display
-  const displayPhone = ownerPhone.length >= 10 ? ownerPhone.slice(-10) : ownerPhone;
 
   return (
     <footer id="contact" className="bg-[#111111] text-white pt-16 pb-8">
@@ -382,7 +286,7 @@ function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: 
             Kailsa Rd, near Mld Spices Company, Vivekanand Nagar, Amroha, Uttar Pradesh 244221
           </p>
           <p className="text-sm text-gray-400">
-            <strong className="text-white">Phone:</strong> +91 {displayPhone}
+            <strong className="text-white">Phone:</strong> +91 88648 43330
           </p>
 
           <div className="flex space-x-3 pt-2">
@@ -399,40 +303,19 @@ function Footer({ ownerPhone, onOpenAdmin }: { ownerPhone: string; onOpenAdmin: 
 
       </div>
 
-      <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6 flex justify-between items-center max-w-7xl mx-auto px-4">
-        <span>© 2026 The Bridal Villa Makeup Studio. All rights reserved.</span>
-        <button onClick={onOpenAdmin} className="text-gray-600 hover:text-gray-400 text-[11px] underline">
-          Admin Login
-        </button>
+      <div className="text-center text-xs text-gray-500 border-t border-gray-800 pt-6">
+        © 2026 The Bridal Villa Makeup Studio. All rights reserved.
       </div>
     </footer>
   );
 }
 
 // ==========================================
-// 8. MAIN APP COMPONENT
+// 7. MAIN APP COMPONENT
 // ==========================================
 export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
-  const [isAdminOpen, setIsAdminOpen] = useState(false);
-  
-  // Default fallback is strictly set to 918864843330
-  const [ownerPhone, setOwnerPhone] = useState('918864843330');
-
-  useEffect(() => {
-    const savedPhone = localStorage.getItem('bv_owner_phone');
-    if (savedPhone && savedPhone.length >= 10) {
-      setOwnerPhone(savedPhone);
-    } else {
-      setOwnerPhone('918864843330');
-    }
-  }, []);
-
-  const handleSavePhone = (newPhone: string) => {
-    setOwnerPhone(newPhone);
-    localStorage.getItem('bv_owner_phone');
-    localStorage.setItem('bv_owner_phone', newPhone);
-  };
+  const ownerPhone = '918864843330'; // Fixed Permanent Number
 
   return (
     <div className="min-h-screen bg-[#FAF6F0] text-gray-900 font-sans antialiased relative">
@@ -440,7 +323,7 @@ export default function App() {
       <Hero onOpenBooking={() => setIsBookingOpen(true)} />
       <Services onOpenBooking={() => setIsBookingOpen(true)} />
       <FAQ />
-      <Footer ownerPhone={ownerPhone} onOpenAdmin={() => setIsAdminOpen(true)} />
+      <Footer ownerPhone={ownerPhone} />
 
       {/* Floating WhatsApp Button */}
       <a
@@ -459,13 +342,6 @@ export default function App() {
         isOpen={isBookingOpen} 
         onClose={() => setIsBookingOpen(false)} 
         ownerPhone={ownerPhone}
-      />
-
-      <AdminModal 
-        isOpen={isAdminOpen} 
-        onClose={() => setIsAdminOpen(false)} 
-        currentPhone={ownerPhone}
-        onSavePhone={handleSavePhone}
       />
     </div>
   );
