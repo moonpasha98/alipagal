@@ -6,70 +6,54 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onOpenBooking }) => {
   return (
-    <nav className="b
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
-g-[#111111] text-[#D4AF37] sticky top-0 z-50 shadow-md border-b border-[#D4AF37]/30">
+    <nav className="bg-[#FAF8F5] text-[#111111] sticky top-0 z-50 shadow-sm border-b border-[#D4AF37]/20 backdrop-blur-md bg-opacity-95">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        
+        {/* Brand Section */}
         <div className="flex items-center space-x-3">
-          {/* Base64 Logo Image */}
-          <img 
-            src="APNA_BASE64_TEXT_YAHAN_PASTE_KAREIN" 
-            alt="The Bridal Villa Logo" 
-            className="h-12 w-auto object-contain max-w-[150px]"
-          />
+          {/* Logo Container with Image + Styled Fallback */}
+          <div className="relative flex items-center justify-center">
+            <img 
+              src="/logo.png" 
+              alt="The Bridal Villa Logo" 
+              className="h-12 w-auto object-contain max-w-[150px]"
+              onError={(e) => {
+                // If /logo.png fails, show clean luxury badge
+                e.currentTarget.style.display = 'none';
+                const fallback = document.getElementById('navbar-logo-badge');
+                if (fallback) fallback.style.display = 'flex';
+              }}
+            />
+            <div 
+              id="navbar-logo-badge" 
+              style={{ display: 'none' }}
+              className="w-11 h-11 rounded-full border-2 border-[#AA771C] bg-[#111111] items-center justify-center text-[#D4AF37] font-serif font-bold text-base shadow-md"
+            >
+              BV
+            </div>
+          </div>
+
           <div>
-            <h1 className="font-serif text-lg sm:text-xl font-bold tracking-wider text-[#F3E5AB]">
+            <h1 className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-[#111111]">
               The Bridal Villa
             </h1>
-            <p className="text-[10px] text-gray-300 tracking-widest uppercase">
+            <p className="text-[10px] text-[#AA771C] font-semibold tracking-widest uppercase">
               Makeup Studio By Nandini Dhingra
             </p>
           </div>
         </div>
 
+        {/* Action Button */}
         <div>
           <button
             onClick={onOpenBooking}
             type="button"
-            className="bg-gradient-to-r from-[#D4AF37] to-[#AA771C] text-black font-semibold text-xs sm:text-sm px-4 py-2 rounded-full shadow-lg hover:opacity-90 transition"
+            className="bg-[#111111] hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-full shadow-md transition-all duration-300 border border-[#D4AF37]/50"
           >
             Book Appointment
           </button>
         </div>
+
       </div>
     </nav>
   );
