@@ -1,4 +1,5 @@
 import React from 'react';
+import WhatsAppButton from './components/WhatsAppButton';
 import Navbar from './components/Navbar';
 import Hero from './components/hero';
 import Gallery from './components/Gallery';
@@ -12,6 +13,7 @@ export default function App() {
       <Services />
       <Gallery />
       <Testimonials />
+      <WhatsAppButton />
     </div>
   );
 }
